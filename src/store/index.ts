@@ -136,6 +136,10 @@ export default new Vuex.Store({
 
       commit('SNAKE_TURN_RIGHT');
     },
+    levelUp(context) {
+      context.commit('SNAKE_GROW');
+      context.dispatch('moveSnake');
+    },
   },
   modules: {},
 });

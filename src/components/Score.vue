@@ -3,8 +3,8 @@
     <div>
       Score: <span id="score">{{ score }}</span>
     </div>
-    <div>
-      Level: <span id="level" @click="change">{{ level }}</span>
+    <div @click="levelUp">
+      Level: <span id="level">{{ level }}</span>
     </div>
   </div>
 </template>
@@ -20,11 +20,8 @@ export default {
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    change() {
-      const rnd = () => Math.floor(Math.random() * 30) * 10;
-      const x = rnd();
-      const y = rnd();
-      this.$store.dispatch('changeFood', { x, y });
+    levelUp() {
+      this.$store.dispatch('levelUp');
     },
   },
 };

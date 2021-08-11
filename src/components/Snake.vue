@@ -51,7 +51,7 @@ export default {
     });
     setTimeout(() => {
       console.log('statr.....');
-      this.start(3000 / this.level);
+      this.start(2000 / this.level);
     }, 1000);
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
