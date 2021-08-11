@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import Snake from './Snake.vue';
 import Food from './Food.vue';
 
@@ -22,14 +23,46 @@ export default {
       isRunning: false,
     };
   },
+  computed: {
+    ...mapState(['snake', 'food', 'isAlive']),
+    ...mapGetters(['level']),
+  },
   components: {
     Snake,
     Food,
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    stop() {
+      clearInterval(this.timer);
+    },
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    move() {
+      if (!this.isAlive) {
+        this.stop();
+        // setTimeout(() => {
+        //   this.isRunning = false;
+        // }, 1000);
+      }
+      this.$store.dispatch('moveSnake');
+    },
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    right() {
+      this.$store.dispatch('turnSnake');
+    },
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    run(value) {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.move();
+      }, value);
+    },
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     start() {
       this.isRunning = true;
+      setTimeout(() => {
+        this.run(2000 / this.level);
+      }, 1000);
     },
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -37,8 +70,11 @@ export default {
     window.addEventListener('keypress', (e) => {
       const keyCode = String.fromCharCode(e.keyCode);
       console.log(keyCode);
-      if (keyCode === ' ') {
+      if (keyCode === ' ' && !this.isRunning) {
         this.start();
+      }
+      if (keyCode === ' ' && this.isRunning) {
+        this.right();
       }
     });
   },

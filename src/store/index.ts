@@ -36,13 +36,13 @@ const arr = () => [
 export default new Vuex.Store({
   state: {
     score: 0,
+    isAlive: true,
     food: {
       x: 120,
       y: 150,
     },
     snake: {
       direct: 2, // 0 up, 1 right, 2 down 3 left
-      speed: 1000,
       exTail: arr()[arr.length - 1],
       body: arr().slice(0, arr.length - 1),
     },
@@ -50,16 +50,6 @@ export default new Vuex.Store({
   getters: {
     level(state) {
       return state.snake.body.length;
-    },
-
-    isAlive({ snake }) {
-      const header = move(snake.body[0], snake.direct);
-      for (let i = snake.body.length - 2; i >= 1; i -= 1) {
-        if (header.x === snake.body[i].x && header.y === snake.body[i].y) {
-          return false;
-        }
-      }
-      return true;
     },
   },
   mutations: {
@@ -87,7 +77,16 @@ export default new Vuex.Store({
       state.snake.direct = modelTurn(state.snake.direct as Direction, -1);
     },
     SNAKE_REFRESH(state) {
-      state.snake.body = arr();
+      state.snake = {
+        direct: 2, // 0 up, 1 right, 2 down 3 left
+        exTail: arr()[arr.length - 1],
+        body: arr().slice(0, arr.length - 1),
+      };
+      state.score = 0;
+      state.isAlive = true;
+    },
+    SNAKE_DIE(state) {
+      state.isAlive = false;
     },
     FOOD_CHANGE(state, value: Position) {
       state.food.x = value.x;
@@ -104,16 +103,21 @@ export default new Vuex.Store({
     moveSnake({ commit, state }) {
       let toHeader = move(state.snake.body[0], state.snake.direct);
 
-      for (let i = state.snake.body.length - 2; i >= 1; i -= 1) {
+      for (let i = state.snake.body.length - 2; i >= 3; i -= 1) {
         if (isSame(toHeader, state.snake.body[i])) {
           commit('SNAKE_TURN_LEFT');
           toHeader = move(state.snake.body[0], state.snake.direct);
-          return;
+          // TODO die when touch body again
+          const p2 = toHeader;
+          if (state.snake.body.some((p) => isSame(p, p2))) {
+            commit('SNAKE_DIE');
+            return;
+          }
+          break;
         }
       }
 
       if (isSame(state.food, toHeader)) {
-        // commit('SNAKE_GROW', state.food);
         if (state.snake.body.some((p) => isSame(p, state.snake.exTail))) {
           return;
         }

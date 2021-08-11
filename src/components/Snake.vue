@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import SnakeBody from './SnakeBody.vue';
 
 export default {
@@ -20,45 +20,7 @@ export default {
   components: {
     SnakeBody,
   },
-  computed: {
-    ...mapState(['snake', 'food']),
-    ...mapGetters(['level']),
-  },
-  methods: {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    move() {
-      this.$store.dispatch('moveSnake');
-    },
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    right() {
-      this.$store.dispatch('turnSnake');
-    },
-
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    start(value) {
-      clearInterval(this.timer);
-      this.timer = setInterval(() => {
-        this.move();
-      }, value);
-    },
-  },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  mounted() {
-    window.addEventListener('keypress', (e) => {
-      const keyCode = String.fromCharCode(e.keyCode);
-      console.log(keyCode);
-      if (keyCode === ' ') {
-        this.right();
-      }
-    });
-    setTimeout(() => {
-      this.start(2000 / this.level);
-    }, 1000);
-  },
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  beforeDestroy() {
-    clearInterval(this.timer);
-  },
+  computed: { ...mapState(['snake', 'food']) },
 };
 </script>
 
