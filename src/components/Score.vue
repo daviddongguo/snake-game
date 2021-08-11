@@ -16,7 +16,7 @@ export default {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   computed: {
     ...mapState(['score']),
-    ...mapGetters(['level', 'isAlive', 'level']),
+    ...mapGetters(['level']),
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

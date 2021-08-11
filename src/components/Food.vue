@@ -1,5 +1,5 @@
 <template>
-  <div id="food" :style="{ left: left, top: top }">
+  <div id="food" :style="{ left: leftOffset, top: topOffset }">
     <div></div>
     <div></div>
     <div></div>
@@ -11,15 +11,14 @@
 export default {
   computed: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    left() {
+    leftOffset() {
       return `${this.$store.state.food.x.toString()}px`;
     },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    top() {
+    topOffset() {
       return `${this.$store.state.food.y.toString()}px`;
     },
   },
-  methods: {},
 };
 </script>
 
