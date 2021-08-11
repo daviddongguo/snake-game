@@ -1,6 +1,13 @@
+/* eslint-disable no-trailing-spaces */
 <template>
   <div id="snake">
-    <SnakeBody v-for="p of snake.body" :key="p.x.toString() + p.y" :position="p" />
+    <SnakeBody
+      v-for="(p, index) of snake.body"
+      :key="p.x.toString() + p.y"
+      :position="p"
+      :isHeader="index === 0"
+      :isTail="index === snake.body.length - 1"
+    />
   </div>
 </template>
 
@@ -9,6 +16,7 @@ import { mapState, mapGetters } from 'vuex';
 import SnakeBody from './SnakeBody.vue';
 
 export default {
+  name: 'Snake',
   components: {
     SnakeBody,
   },
@@ -44,7 +52,6 @@ export default {
       }
     });
     setTimeout(() => {
-      console.log('statr.....');
       this.start(2000 / this.level);
     }, 1000);
   },
