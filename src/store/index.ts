@@ -102,41 +102,50 @@ export default new Vuex.Store({
       }
     },
     moveSnake({ commit, state }) {
-      let header = move(state.snake.body[0], state.snake.direct);
+      let toHeader = move(state.snake.body[0], state.snake.direct);
 
       for (let i = state.snake.body.length - 2; i >= 1; i -= 1) {
-        if (isSame(header, state.snake.body[i])) {
-          // TODO: turn left, then try move again
-
-          commit('SNAKE_TURN_LEFT', -1);
-          header = move(state.snake.body[0], state.snake.direct);
+        if (isSame(toHeader, state.snake.body[i])) {
+          commit('SNAKE_TURN_LEFT');
+          toHeader = move(state.snake.body[0], state.snake.direct);
           return;
-          // commit('SNAKE_REFRESH');
         }
       }
 
-      if (isSame(state.food, header)) {
-        commit('SNAKE_GROW', state.food);
+      if (isSame(state.food, toHeader)) {
+        // commit('SNAKE_GROW', state.food);
+        if (state.snake.body.some((p) => isSame(p, state.snake.exTail))) {
+          return;
+        }
+        commit('SNAKE_GROW');
         commit('FOOD_CHANGE', randomPosition());
       }
 
       commit('SNAKE_STEP');
     },
-    turnSnake({ commit, state }, value) {
-      const toDirect = modelTurn(state.snake.direct as Direction, value);
-      const header = move(state.snake.body[0], toDirect);
+    turnSnake({ commit, state }) {
+      const frontAndRight = [];
+      const toDirect = modelTurn(state.snake.direct as Direction, 1);
+
+      frontAndRight.push(move(state.snake.body[0], state.snake.direct));
+      frontAndRight.push(move(state.snake.body[0], toDirect));
 
       for (let i = state.snake.body.length - 2; i >= 1; i -= 1) {
-        if (isSame(header, state.snake.body[i])) {
-          commit('SNAKE_TURN_LEFT');
-          // TODO: refresh snake
-          // commit('SNAKE_REFRESH');
+        if (
+          // eslint-disable-next-line operator-linebreak
+          isSame(frontAndRight[0], state.snake.body[i]) ||
+          isSame(frontAndRight[1], state.snake.body[i])
+        ) {
+          return;
         }
       }
 
       commit('SNAKE_TURN_RIGHT');
     },
     levelUp(context) {
+      if (context.state.snake.body.some((p) => isSame(p, context.state.snake.exTail))) {
+        return;
+      }
       context.commit('SNAKE_GROW');
       context.dispatch('moveSnake');
     },

@@ -1,5 +1,5 @@
 <template>
-  <div id="snake" v-on:keyup.enter="move" v-on:keydown.left="left()" v-on:keydown.right="right()">
+  <div id="snake">
     <SnakeBody v-for="p of snake.body" :key="p.x.toString() + p.y" :position="p" />
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
     },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     right() {
-      this.$store.commit('SNAKE_TURN_RIGHT');
+      this.$store.dispatch('turnSnake');
     },
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -39,13 +39,7 @@ export default {
     window.addEventListener('keypress', (e) => {
       const keyCode = String.fromCharCode(e.keyCode);
       console.log(keyCode);
-      if (keyCode === 'q') {
-        this.left();
-      }
-      if (keyCode === 'w') {
-        this.move();
-      }
-      if (keyCode === 'e') {
+      if (keyCode === ' ') {
         this.right();
       }
     });

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ leftOffset, topOffset }"></div>
+  <div :style="{ left: leftOffset, top: topOffset }"></div>
 </template>
 
 <script>
