@@ -3,6 +3,12 @@ export type Position = {
   y: number;
 };
 
+export type Direction = 0 | 1 | 2 | 3;
+
+export const modelTurn = (direct: Direction, value: -1 | 1): Direction =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  ((direct + 4 + value) % 4) as Direction;
+
 export const randomPosition = (): Position => {
   function rnd() {
     return Math.floor(Math.random() * 30) * 10;

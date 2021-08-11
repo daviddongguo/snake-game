@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import SnakeBody from './SnakeBody.vue';
 
 export default {
@@ -14,6 +14,7 @@ export default {
   },
   computed: {
     ...mapState(['snake', 'food']),
+    ...mapGetters(['level']),
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -22,11 +23,15 @@ export default {
     },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     right() {
-      this.$store.commit('SNAKE_TURN', 1);
+      this.$store.commit('SNAKE_TURN_RIGHT');
     },
+
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    left() {
-      this.$store.commit('SNAKE_TURN', -1);
+    start(value) {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.move();
+      }, value);
     },
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -44,9 +49,10 @@ export default {
         this.right();
       }
     });
-    this.timer = setInterval(() => {
-      this.move();
-    }, 200);
+    setTimeout(() => {
+      console.log('statr.....');
+      this.start(3000 / this.level);
+    }, 1000);
   },
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   beforeDestroy() {

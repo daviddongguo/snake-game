@@ -15,8 +15,8 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   computed: {
-    ...mapState([]),
-    ...mapGetters(['level', 'isAlive', 'score', 'level']),
+    ...mapState(['score']),
+    ...mapGetters(['level', 'isAlive', 'level']),
   },
   methods: {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
