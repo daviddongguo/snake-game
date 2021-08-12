@@ -61,7 +61,7 @@ export default {
     start() {
       this.isRunning = true;
       setTimeout(() => {
-        this.run(2000 / this.level);
+        this.run(500 - this.level * 5);
       }, 1000);
     },
   },
