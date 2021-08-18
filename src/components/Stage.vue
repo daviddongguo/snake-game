@@ -60,8 +60,9 @@ export default {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     start() {
       this.isRunning = true;
+
       setTimeout(() => {
-        this.run(500 - this.level * 5);
+        this.run(this.level <= 80 ? 350 - this.level * 4 : 30);
       }, 1000);
     },
   },
